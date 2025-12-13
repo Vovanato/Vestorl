@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+
+<body>
+<div class="auth-card">  
+
+        <h2>Вхід</h2>
+        <input type="email" id="email" placeholder="Введіть email" />
+        <input type="password" id="password" placeholder="Пароль" /> 
+        <button onclick="loginUser()">Увійти</button>
+        <p id="message"></p> 
+
+    </div>
+    <script>
+        async function loginUser(){
+            const emailinput=document.getElementById("email");
+            const passwordinput=document.getElementById("password");
+            const messageBox=document.getElementById("message");
+            const email=emailinput.value;
+            const password=passwordinput.value;
+            
+            if (email === '' || password === '') {
+            messageBox.innerText = "Заповніть всі поля!";
+            messageBox.style.color = "red";
+            return; 
+        }
+            messageBox.innerText = "Перевірка...";
+        const response=await fetch('/vbp/login',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({email:email,password:password})
+        });
+        const result = await response.json();
+        if(response.ok){
+            window.location.href='/dashboard';
+        }else{
+            messageBox.innerText = result.error;
+            messageBox.style.color="red";
+        }        
+    }
+    </script>
+</body>
+</html>

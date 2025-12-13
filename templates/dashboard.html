@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head> 
+    <meta charset="UTF-8">
+    <title>Vestorl</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head> 
+
+<body>
+
+    <div style="text-align: right;">
+        <button onclick="logoutUser()" style="background-color: #6c757d;">Вийти </button>
+    </div>
+
+    <h1> Vestorl</h1>
+
+    <div class="upload-section">
+        <input type="file" id="fileInput" />
+        <button onclick="uploadFiles()">Завантажити </button> 
+        <p id="status">Оберіть файл...</p>
+    </div> 
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Назва файлу</th>
+                <th>Дії</th>
+            </tr>
+        </thead>
+        <tbody id="files-table-body">
+        </tbody>
+    </table>
+
+    <script>
+        const CURRENT_USER_ID = 1; 
+
+        async function uploadFiles() {
+            const input = document.getElementById('fileInput');
+            const status = document.getElementById('status');
+
+            if(input.files.length === 0){
+                alert("Виберіть файл!");
+                return;
+            }
+
+            const formData = new FormData();  
+            formData.append('file', input.files[0]);
+            formData.append('user_id', CURRENT_USER_ID);
+
+            status.innerText = "Завантаження...";
+            
+            const response = await fetch('/vbp/upload', {
+                method: 'POST', 
+                body: formData
+            });
+
+            if (response.ok){
+                status.innerText = "Успіх ";
+                status.style.color = "green";
+                loadFiles(); 
+                input.value = '';
+            } else {
+                status.innerText = "Невдача ";
+                status.style.color = "red";
+            }
+        }
+
+        async function loadFiles() {
+            const response = await fetch(`/vbp/files?user_id=${CURRENT_USER_ID}`);
+            const files = await response.json();
+            
+            const filelist = document.getElementById('files-table-body');
+            filelist.innerHTML = ''; 
+
+            files.forEach(file => {
+                const row = `
+                    <tr>
+                        <td>${file.id}</td>
+                        <td>${file.filename}</td>
+                        <td>
+                            <a href="${file.file_url}" target="_blank">Скачати</a>
+                            <button onclick="deleteFile(${file.id})" style="color:red; margin-left:10px; cursor:pointer;">Видалити</button>
+                        </td>
+                    </tr>
+                `;
+                filelist.innerHTML += row;
+            });
+
+            console.log("Список оновлено:", files);
+        }
+        
+
+        async function deleteFile(fileId) {
+            if (!confirm("Точно видалити?")) return; 
+
+            const response = await fetch(`/vbp/files?file_id=${fileId}&user_id=${CURRENT_USER_ID}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                loadFiles();
+            } else {
+                alert("Помилка видалення!");
+            }
+        }
+
+        async function logoutUser() {
+            await fetch('/vbp/logout', { method: 'POST' });
+            window.location.href = '/login';
+        }
+
+        loadFiles();
+
+    </script>
+</body>
+</html>

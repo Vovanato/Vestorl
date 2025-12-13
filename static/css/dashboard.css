@@ -1,0 +1,141 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6; 
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+}   
+
+div[style="text-align: right;"] {
+    margin-bottom: 20px;
+}
+
+div[style="text-align: right;"] button {
+    background-color: #6c757d;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+div[style="text-align: right;"] button:hover {
+    background-color: #5a6268;
+}
+
+.upload-section {
+    background: white;
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+    border: 2px dashed #bdc3c7; 
+}
+
+input[type="file"] {
+    margin-right: 10px;
+    padding: 5px;
+}
+
+#fileInput {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#fileInput:hover {
+    background-color: #e2e6ea;
+    border-color: #adb5bd;
+}
+.upload-section button {
+    background-color: #28a745; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: transform 0.1s;
+}
+
+.upload-section button:active {
+    transform: scale(0.98); 
+}
+
+#status {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 20px;
+}
+
+table {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto; 
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    background-color: #007bff; 
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+tr:hover {
+    background-color: #f8f9fa; 
+}
+
+a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    margin-right: 15px;
+    border: 1px solid #007bff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+a:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+button[onclick^="deleteFile"] {
+    background-color: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+button[onclick^="deleteFile"]:hover {
+    background-color: #dc3545;
+    color: white;
+}   

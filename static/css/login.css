@@ -1,0 +1,55 @@
+
+/* 1. Сірий фон і центрування */
+body {
+    background-color: #f4f7f6;
+    margin: 0;
+    height: 100vh; /* На весь екран */
+    display: flex; /* Магія центрування */
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
+}
+
+/* 2. Біла картка */
+.auth-card {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Тінь */
+    width: 300px;
+    text-align: center;
+}
+
+/* 3. Гарні інпути */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box; /* Щоб не вилазили за межі */
+}
+
+/* 4. Кнопка */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db; /* Синій */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* 5. Заголовок */
+h2 {
+    color: #333;
+    margin-top: 0;
+}

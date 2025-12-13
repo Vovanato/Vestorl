@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+        <meta charset="UTF-8">
+        <title>Реєстрація</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    </head>
+<body>
+    <div class="auth-card">
+        
+        <h2>Реєстрація</h2>
+        
+        <input type="text" id="username" placeholder="Ваше ім'я" />
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Пароль" />
+        
+        <button onclick="registerUser()">Зареєструватись</button>
+        
+        <p id="message"></p>
+        
+        <a href="/login">Вже є акаунт? Увійти</a>
+
+    </div>
+    <script>
+        async function registerUser() {
+            const usernameinput = document.getElementById("username");
+            const emailinput = document.getElementById("email");
+            const passwordinput = document.getElementById("password");
+            const messageBox = document.getElementById("message");
+
+            const username = usernameinput.value;
+            const email = emailinput.value;
+            const password = passwordinput.value;
+
+            if ( username === '' || email === '' || password === '') {
+            messageBox.innerText = "Заповніть всі поля!";
+            messageBox.style.color = "red";
+            return; 
+        }
+        messageBox.innerText = "Перевірка..."
+        const response= await fetch('/vbp/register',{
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+        body: JSON.stringify({username:username, email:email,password:password})
+        })
+        const result = await response.json();
+        if(response.ok){
+            window.location.href='/login';
+        }else{
+            messageBox.innerText = result.error;
+            messageBox.style.color="red";
+        } 
+        }
+    </script>
+</body>    
+</html>
