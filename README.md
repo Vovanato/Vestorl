@@ -97,6 +97,7 @@ cd Vestorl
 
 python3 -m venv .venv
 source .venv/bin/activate  # Для Linux/MacOS
+
 .\.venv\Scripts\Activate # Для Windows
 
 
