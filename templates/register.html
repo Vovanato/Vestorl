@@ -1,58 +1,70 @@
 <!DOCTYPE html>
 <html lang="uk">
-    <head>
-        <meta charset="UTF-8">
-        <title>Реєстрація</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestorl | Реєстрація</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+</head>
 <body>
-    <div class="auth-card">
-        
-        <h2>Реєстрація</h2>
-        
-        <input type="text" id="username" placeholder="Ваше ім'я" />
-        <input type="email" id="email" placeholder="Email" />
-        <input type="password" id="password" placeholder="Пароль" />
-        
-        <button onclick="registerUser()">Зареєструватись</button>
-        
-        <p id="message"></p>
-        
-        <a href="/login">Вже є акаунт? Увійти</a>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">Vestorl</div>
+            <p class="subtitle">Створіть власний хмарний простір</p>
+            
+            <div id="error-box" class="error-msg"></div>
+
+            <form id="register-form">
+                <div class="form-group">
+                    <label>Ваше ім'я</label>
+                    <input type="text" id="name" placeholder="Як вас звати?" required>
+                </div>
+                <div class="form-group">
+                    <label>Електронна пошта</label>
+                    <input type="email" id="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="password" placeholder="Мінімум 8 символів" required>
+                </div>
+                <button type="submit" class="btn-auth">Зареєструватися</button>
+                <div class="switch-mode">
+                    Вже маєте акаунт? <a href="/login">Увійти</a>
+                </div>
+            </form>
+        </div>
     </div>
+
     <script>
-        async function registerUser() {
-            const usernameinput = document.getElementById("username");
-            const emailinput = document.getElementById("email");
-            const passwordinput = document.getElementById("password");
-            const messageBox = document.getElementById("message");
+        document.getElementById('register-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorBox = document.getElementById('error-box');
 
-            const username = usernameinput.value;
-            const email = emailinput.value;
-            const password = passwordinput.value;
+            try {
+                const response = await fetch('/vbp/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
 
-            if ( username === '' || email === '' || password === '') {
-            messageBox.innerText = "Заповніть всі поля!";
-            messageBox.style.color = "red";
-            return; 
-        }
-        messageBox.innerText = "Перевірка..."
-        const response= await fetch('/vbp/register',{
-            method: 'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-        body: JSON.stringify({username:username, email:email,password:password})
-        })
-        const result = await response.json();
-        if(response.ok){
-            window.location.href='/login';
-        }else{
-            messageBox.innerText = result.error;
-            messageBox.style.color="red";
-        } 
-        }
+                if (response.ok) {
+                    window.location.href = '/login';
+                } else {
+                    const data = await response.json();
+                    errorBox.innerText = data.error || "Помилка реєстрації";
+                    errorBox.style.display = 'block';
+                }
+            } catch (err) {
+                errorBox.innerText = "Сервер недоступний";
+                errorBox.style.display = 'block';
+            }
+        };
     </script>
-</body>    
+</body>
 </html>

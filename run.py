@@ -1,6 +1,4 @@
-from flask import Flask,request
-from werkzeug.security import generate_password_hash
-from app.database import get_db_connection
+from flask import Flask
 from app.routes.api import vbp
 from app.routes.pages import pages_bp
 import os

@@ -1,141 +1,264 @@
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6; 
+/* Базовий Reset */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at top, #0d1b2a 0%, #010101 100%);
+    background-attachment: fixed;
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
     padding: 20px;
-    color: #333;
+}
+
+/* Контейнер */
+.container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(13, 27, 42, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Шапка */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
 h1 {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 30px;
-}   
-
-div[style="text-align: right;"] {
-    margin-bottom: 20px;
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, #4cc9f0, #4361ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
 }
 
-div[style="text-align: right;"] button {
-    background-color: #6c757d;
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background 0.3s;
+.badge {
+    font-size: 0.7rem;
+    background: rgba(76, 201, 240, 0.1);
+    color: #4cc9f0;
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(76, 201, 240, 0.3);
 }
 
-div[style="text-align: right;"] button:hover {
-    background-color: #5a6268;
-}
-
+/* Секція завантаження */
 .upload-section {
-    background: white;
-    max-width: 600px;
-    margin: 0 auto 30px auto;
-    padding: 25px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.upload-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Кастомна кнопка ВИБОРУ файлу */
+.file-select-wrapper {
+    flex: 1;
+    min-width: 200px;
+}
+
+.custom-file-label {
+    display: block;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(76, 201, 240, 0.5);
+    padding: 12px 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-align: center;
-    border: 2px dashed #bdc3c7; 
-}
-
-input[type="file"] {
-    margin-right: 10px;
-    padding: 5px;
-}
-
-#fileInput {
-    padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
-    border-radius: 5px;
     cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.6);
 }
-#fileInput:hover {
-    background-color: #e2e6ea;
-    border-color: #adb5bd;
+
+.custom-file-label:hover {
+    border-color: #4cc9f0;
+    background: rgba(76, 201, 240, 0.05);
+    color: #ffffff;
 }
-.upload-section button {
-    background-color: #28a745; 
+
+.custom-file-label span.selected {
+    color: #4cc9f0;
+    font-weight: 600;
+}
+
+/* Головна кнопка завантаження */
+.btn-primary {
+    background: #4361ee;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: transform 0.1s;
+    transition: 0.3s;
 }
 
-.upload-section button:active {
-    transform: scale(0.98); 
+.btn-primary:hover {
+    background: #4cc9f0;
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.4);
 }
 
-#status {
-    margin-top: 15px;
-    font-weight: bold;
-    min-height: 20px;
+/* Таблиця */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
 }
 
 table {
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto; 
-    border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-th, td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
+    border-collapse: separate;
+    border-spacing: 0 10px;
 }
 
 th {
-    background-color: #007bff; 
-    color: white;
+    padding: 10px;
+    text-align: left;
+    color: #4cc9f0;
+    font-size: 0.8rem;
     text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 1px;
 }
 
-tr:hover {
-    background-color: #f8f9fa; 
+.file-row td {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px;
+    border-top: 1px solid rgba(76, 201, 240, 0.1);
+    border-bottom: 1px solid rgba(76, 201, 240, 0.1);
 }
 
-a {
+.file-row td:first-child { border-radius: 12px 0 0 12px; border-left: 3px solid #4361ee; }
+.file-row td:last-child { border-radius: 0 12px 12px 0; border-right: 3px solid #4361ee; }
+
+.file-row:hover td {
+    background: rgba(76, 201, 240, 0.05);
+    border-color: rgba(76, 201, 240, 0.4);
+}
+
+/* Кнопки в таблиці */
+.actions { display: flex; gap: 8px; }
+
+.btn-download, .btn-delete-small {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
     text-decoration: none;
-    color: #007bff;
-    font-weight: bold;
-    margin-right: 15px;
-    border: 1px solid #007bff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    transition: all 0.3s;
+    border: 1px solid;
+    transition: 0.2s;
 }
 
-a:hover {
-    background-color: #007bff;
-    color: white;
+.btn-download { border-color: #4cc9f0; color: #4cc9f0; }
+.btn-download:hover { background: #4cc9f0; color: #000; }
+
+.btn-delete-small { border-color: #ff4d6d; color: #ff4d6d; background: transparent; cursor: pointer; }
+.btn-delete-small:hover { background: #ff4d6d; color: #fff; }
+
+.type-badge {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
 }
 
-button[onclick^="deleteFile"] {
-    background-color: transparent;
-    border: 1px solid #dc3545;
-    color: #dc3545;
-    padding: 5px 10px;
-    border-radius: 4px;
+/* Адаптивність */
+@media (max-width: 600px) {
+    .hide-mobile { display: none; }
+    .upload-grid { flex-direction: column; }
+    .btn-primary { width: 100%; }
+}
+
+.btn-logout {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.3s;
 }
 
-button[onclick^="deleteFile"]:hover {
-    background-color: #dc3545;
-    color: white;
-}   
+.btn-logout:hover { border-color: #ff4d6d; color: #ff4d6d; }
+/* ... (попередні стилі залишаються) ... */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: radial-gradient(circle at top, #0d1b2a 0%, #010101 100%);
+    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    background: rgba(13, 27, 42, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(76, 201, 240, 0.1);
+    border-radius: 24px;
+    padding: 30px;
+}
+
+.upload-section {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+/* Ефект, коли файл "висіть" над областю */
+.upload-section.drag-over {
+    background: rgba(76, 201, 240, 0.1);
+    border: 2px dashed #4cc9f0;
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(76, 201, 240, 0.2);
+}
+
+.upload-grid {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.custom-file-label {
+    display: block;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(76, 201, 240, 0.5);
+    padding: 15px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.custom-file-label span.selected {
+    color: #4cc9f0;
+    text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+}
+

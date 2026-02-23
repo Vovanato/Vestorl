@@ -59,7 +59,6 @@ def user_login():
     except Exception as e:
         return jsonify({"error":str(e)}),500
 
-@vbp.route('/upload',methods=['POST'])
 @vbp.route('/upload', methods=['POST'])
 def upload_users_files():
     if 'user_id' not in session:
@@ -102,7 +101,6 @@ def get_user_files():
     cursor.close()
     conn.close()
     return jsonify(files_list)
-@vbp.route('/files', methods=['DELETE'])
 @vbp.route('/files', methods=['DELETE'])
 def delete_user_file():
     if 'user_id' not in session:

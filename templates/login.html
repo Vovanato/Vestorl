@@ -2,49 +2,65 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Вхід</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestorl | Вхід</title>
+    <!-- Підключаємо зовнішній CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
-
 <body>
-<div class="auth-card">  
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-        <h2>Вхід</h2>
-        <input type="email" id="email" placeholder="Введіть email" />
-        <input type="password" id="password" placeholder="Пароль" /> 
-        <button onclick="loginUser()">Увійти</button>
-        <p id="message"></p> 
-
-    </div>
-    <script>
-        async function loginUser(){
-            const emailinput=document.getElementById("email");
-            const passwordinput=document.getElementById("password");
-            const messageBox=document.getElementById("message");
-            const email=emailinput.value;
-            const password=passwordinput.value;
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">Vestorl</div>
+            <p class="subtitle">Авторизуйтесь для доступу до Azure</p>
             
-            if (email === '' || password === '') {
-            messageBox.innerText = "Заповніть всі поля!";
-            messageBox.style.color = "red";
-            return; 
-        }
-            messageBox.innerText = "Перевірка...";
-        const response=await fetch('/vbp/login',{
-            method: 'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({email:email,password:password})
-        });
-        const result = await response.json();
-        if(response.ok){
-            window.location.href='/dashboard';
-        }else{
-            messageBox.innerText = result.error;
-            messageBox.style.color="red";
-        }        
-    }
+            <div id="error-box" class="error-msg"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label>Електронна пошта</label>
+                    <input type="email" id="email" placeholder="email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-auth">Увійти в систему</button>
+                <div class="switch-mode">
+                    Ще не зареєстровані? <a href="/register">Створити акаунт</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorBox = document.getElementById('error-box');
+
+            try {
+                const response = await fetch('/vbp/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    window.location.href = '/dashboard';
+                } else {
+                    const data = await response.json();
+                    errorBox.innerText = data.error || "Невірні дані для входу";
+                    errorBox.style.display = 'block';
+                }
+            } catch (err) {
+                errorBox.innerText = "Помилка підключення до сервера";
+                errorBox.style.display = 'block';
+            }
+        };
     </script>
 </body>
 </html>

@@ -1,55 +1,167 @@
+/* --- ЗАГАЛЬНИЙ NEON TECH STYLE ДЛЯ АВТОРИЗАЦІЇ --- */
 
-/* 1. Сірий фон і центрування */
-body {
-    background-color: #f4f7f6;
+* {
     margin: 0;
-    height: 100vh; /* На весь екран */
-    display: flex; /* Магія центрування */
-    justify-content: center;
-    align-items: center;
-    font-family: sans-serif;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, sans-serif;
 }
 
-/* 2. Біла картка */
+body {
+    background: radial-gradient(circle at center, #0d1b2a 0%, #010101 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Декоративні неонові сфери */
+.orb {
+    position: absolute;
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+    background: rgba(67, 97, 238, 0.15);
+    filter: blur(90px);
+    z-index: 0;
+}
+
+.orb-1 { top: -150px; left: -150px; }
+.orb-2 { bottom: -150px; right: -150px; background: rgba(76, 201, 240, 0.1); }
+
+.auth-container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+/* Картка Glassmorphism */
 .auth-card {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Тінь */
-    width: 300px;
+    background: rgba(13, 27, 42, 0.7);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(76, 201, 240, 0.2);
+    border-radius: 28px;
+    padding: 45px 40px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
     text-align: center;
 }
 
-/* 3. Гарні інпути */
-input {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box; /* Щоб не вилазили за межі */
+.logo {
+    font-size: 2.8rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, #4cc9f0, #4361ee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
 }
 
-/* 4. Кнопка */
-button {
+.subtitle {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.95rem;
+    margin-bottom: 35px;
+}
+
+/* Форми та інпути */
+.form-group {
+    margin-bottom: 22px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.75rem;
+    color: #4cc9f0;
+    margin-bottom: 8px;
+    margin-left: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
+}
+
+.form-group input {
     width: 100%;
-    padding: 12px;
-    background-color: #3498db; /* Синій */
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 20px;
+    border-radius: 14px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: #4cc9f0;
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.25);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки */
+.btn-auth {
+    width: 100%;
+    background: linear-gradient(90deg, #4361ee, #4cc9f0);
     color: white;
     border: none;
-    border-radius: 5px;
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1.05rem;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     margin-top: 10px;
 }
 
-button:hover {
-    background-color: #2980b9;
+.btn-auth:hover {
+    box-shadow: 0 0 30px rgba(76, 201, 240, 0.5);
+    transform: translateY(-3px);
 }
 
-/* 5. Заголовок */
-h2 {
-    color: #333;
-    margin-top: 0;
+.btn-auth:active {
+    transform: scale(0.98);
+}
+
+/* Перемикання між сторінками */
+.switch-mode {
+    margin-top: 28px;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.switch-mode a {
+    color: #4cc9f0;
+    text-decoration: none;
+    font-weight: 600;
+    margin-left: 5px;
+    transition: 0.2s;
+}
+
+.switch-mode a:hover {
+    text-shadow: 0 0 10px rgba(76, 201, 240, 0.6);
+    color: #ffffff;
+}
+
+/* Помилки */
+.error-msg {
+    background: rgba(255, 77, 109, 0.12);
+    color: #ff4d6d;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin-bottom: 25px;
+    display: none;
+    border: 1px solid rgba(255, 77, 109, 0.25);
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }

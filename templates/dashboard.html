@@ -2,107 +2,167 @@
 <html lang="uk">
 <head> 
     <meta charset="UTF-8">
-    <title>Vestorl</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestorl | Cloud Storage</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head> 
 
 <body>
+    <div class="container">
+        <!-- Шапка -->
+        <header class="main-header">
+            <div class="logo-area">
+                <h1>Vestorl</h1>
+                <span class="badge">Azure Storage</span>
+            </div>
+            <button class="btn-logout" onclick="logoutUser()">Вийти</button>
+        </header>
 
-    <div style="text-align: right;">
-        <button onclick="logoutUser()" style="background-color: #6c757d;">Вийти </button>
+        <!-- Секція завантаження з підтримкою Drag-and-Drop -->
+        <div class="upload-section" id="dropZone">
+            <div class="upload-grid">
+                <div class="file-select-wrapper">
+                    <input type="file" id="fileInput" onchange="updateFileLabel()" hidden />
+                    <label for="fileInput" class="custom-file-label" id="dropLabel">
+                        <span id="fileNameDisplay">Оберіть файл або перетягніть сюди</span>
+                    </label>
+                </div>
+                
+                <button class="btn-primary" onclick="uploadFiles()">Завантажити в хмару</button> 
+            </div>
+            <p id="status" class="status-msg">Система готова до передачі даних...</p>
+        </div> 
+
+        <!-- Таблиця -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Назва файлу</th>
+                        <th class="hide-mobile">Формат</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody id="files-table-body"></tbody>
+            </table>
+        </div>
     </div>
-
-    <h1> Vestorl</h1>
-
-    <div class="upload-section">
-        <input type="file" id="fileInput" />
-        <button onclick="uploadFiles()">Завантажити </button> 
-        <p id="status">Оберіть файл...</p>
-    </div> 
-
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Назва файлу</th>
-                <th>Дії</th>
-            </tr>
-        </thead>
-        <tbody id="files-table-body">
-        </tbody>
-    </table>
 
     <script>
         const CURRENT_USER_ID = 1; 
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+
+        // --- Магія Drag-and-Drop ---
+
+        // Забороняємо браузеру просто відкривати файл при перетягуванні
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, e => {
+                e.preventDefault();
+                e.stopPropagation();
+            }, false);
+        });
+
+        // Підсвітка зони, коли файл над нею
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.add('drag-over');
+            }, false);
+        });
+
+        // Прибираємо підсвітку
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, () => {
+                dropZone.classList.remove('drag-over');
+            }, false);
+        });
+
+        // Обробка самого "кидання" файлу
+        dropZone.addEventListener('drop', e => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+
+            if (files.length > 0) {
+                fileInput.files = files; // Призначаємо файл інпуту
+                updateFileLabel();       // Оновлюємо напис
+            }
+        }, false);
+
+        // --- Основні функції ---
+
+        function updateFileLabel() {
+            const display = document.getElementById('fileNameDisplay');
+            if (fileInput.files.length > 0) {
+                display.innerText = fileInput.files[0].name;
+                display.classList.add('selected');
+            } else {
+                display.innerText = "Оберіть файл або перетягніть сюди";
+                display.classList.remove('selected');
+            }
+        }
 
         async function uploadFiles() {
-            const input = document.getElementById('fileInput');
             const status = document.getElementById('status');
-
-            if(input.files.length === 0){
-                alert("Виберіть файл!");
+            if(fileInput.files.length === 0){
+                status.innerText = "Помилка: файл не обрано!";
+                status.style.color = "#ff4d6d";
                 return;
             }
 
             const formData = new FormData();  
-            formData.append('file', input.files[0]);
+            formData.append('file', fileInput.files[0]);
             formData.append('user_id', CURRENT_USER_ID);
 
-            status.innerText = "Завантаження...";
+            status.innerText = "Передача в Azure...";
+            status.style.color = "#4cc9f0";
             
-            const response = await fetch('/vbp/upload', {
-                method: 'POST', 
-                body: formData
-            });
+            try {
+                const response = await fetch('/vbp/upload', {
+                    method: 'POST', 
+                    body: formData
+                });
 
-            if (response.ok){
-                status.innerText = "Успіх ";
-                status.style.color = "green";
-                loadFiles(); 
-                input.value = '';
-            } else {
-                status.innerText = "Невдача ";
-                status.style.color = "red";
+                if (response.ok){
+                    status.innerText = "Успішно збережено в хмарі!";
+                    loadFiles(); 
+                    fileInput.value = '';
+                    updateFileLabel();
+                } else {
+                    status.innerText = "Помилка сервера";
+                }
+            } catch (err) {
+                status.innerText = "Помилка мережі";
             }
         }
 
         async function loadFiles() {
             const response = await fetch(`/vbp/files?user_id=${CURRENT_USER_ID}`);
             const files = await response.json();
-            
             const filelist = document.getElementById('files-table-body');
             filelist.innerHTML = ''; 
 
             files.forEach(file => {
-                const row = `
-                    <tr>
+                const extension = file.filename.split('.').pop().toUpperCase();
+                filelist.innerHTML += `
+                    <tr class="file-row">
                         <td>${file.id}</td>
-                        <td>${file.filename}</td>
+                        <td class="file-name">${file.filename}</td>
+                        <td class="hide-mobile"><span class="type-badge">${extension}</span></td>
                         <td>
-                            <a href="${file.file_url}" target="_blank">Скачати</a>
-                            <button onclick="deleteFile(${file.id})" style="color:red; margin-left:10px; cursor:pointer;">Видалити</button>
+                            <div class="actions">
+                                <a href="${file.file_url}" target="_blank" class="btn-download">Download</a>
+                                <button onclick="deleteFile(${file.id})" class="btn-delete-small">Delete</button>
+                            </div>
                         </td>
-                    </tr>
-                `;
-                filelist.innerHTML += row;
+                    </tr>`;
             });
-
-            console.log("Список оновлено:", files);
         }
         
-
         async function deleteFile(fileId) {
-            if (!confirm("Точно видалити?")) return; 
-
-            const response = await fetch(`/vbp/files?file_id=${fileId}&user_id=${CURRENT_USER_ID}`, {
-                method: 'DELETE'
-            });
-
-            if (response.ok) {
-                loadFiles();
-            } else {
-                alert("Помилка видалення!");
-            }
+            if (!confirm("Видалити об'єкт?")) return; 
+            await fetch(`/vbp/files?file_id=${fileId}&user_id=${CURRENT_USER_ID}`, { method: 'DELETE' });
+            loadFiles();
         }
 
         async function logoutUser() {
@@ -111,7 +171,6 @@
         }
 
         loadFiles();
-
     </script>
 </body>
 </html>
